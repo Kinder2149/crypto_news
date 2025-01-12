@@ -1,0 +1,23 @@
+workflows:
+  ios-workflow:
+    name: iOS Workflow
+    environment:
+      ios_signing:
+        distribution_type: development
+        bundle_identifier: com.votreNom.cryptoTracker
+      vars:
+        APP_STORE_CONNECT_ISSUER_ID: Encoded(...) # À remplir plus tard
+        APP_STORE_CONNECT_KEY_IDENTIFIER: Encoded(...) # À remplir plus tard
+        APP_STORE_CONNECT_PRIVATE_KEY: Encoded(...) # À remplir plus tard
+    scripts:
+      - name: Set up code signing settings
+        script: |
+          keychain initialize
+      - name: Flutter packages get
+        script: |
+          flutter packages pub get
+      - name: Flutter build iOS
+        script: |
+          flutter build ios --release --no-codesign
+    artifacts:
+      - build/ios/ipa/*.ipa
